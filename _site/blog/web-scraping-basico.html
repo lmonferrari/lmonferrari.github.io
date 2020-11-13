@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<!--
+  portfolYOU Jekyll theme by Youssef Raafat
+  Free for personal and commercial use under the MIT license
+  https://github.com/YoussefRaafatNasry/portfolYOU
+-->
+
+<html lang="en" class="h-100">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Vamos analisar dados e tomar um :coffee: café? ">
+
+  <title>Portifólio</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
+
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.0/css/all.css">
+
+  <!-- Bootstrap CSS CDN -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+  <!-- Animate CSS CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.css" type="text/css"/>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css" type="text/css">
+
+</head>
+
+
+<body class="d-flex flex-column h-100">
+
+  <main class="flex-shrink-0 container mt-5">
+  <nav class="navbar navbar-expand-lg navbar-light">
+
+  <a class="navbar-brand" href="/"><h5><b>Portifólio</b></h5></a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav ml-auto">
+<a class="nav-item nav-link " href="/projects/">Projetos</a>
+
+      <a class="nav-item nav-link active" href="/blog/">Blog</a>
+
+      <a class="nav-item nav-link " href="/about/">Sobre</a>
+
+      
+
+    </div>
+  </div>
+
+</nav>
+  <div class="col-lg-10 mx-auto mt-5 post">
+  <h1><b>Web Scraping Básico com Python</b></h1>
+
+<p class="post-metadata text-muted">
+  19 August 2020 -  
+  <b>5 mins read time</b>
+
+  <br>Tags: 
+    
+    <a class="text-decoration-none no-underline" href="/blog/tags#web-scraping">
+      <span class="tag badge badge-pill text-primary border border-primary">Web Scraping</span>
+    </a>
+    </p>
+
+<p>Nesse primeito post vou mostrar como fazer Web Scraping básico porém poderoso.
+O site que faremos o scraping será o <a href="https://www.worlddata.info">https://www.worlddata.info</a>, que contém uma série de dados sobre os países. 
+O objetivo desse post é apenas para estudo! Use por sua conta e risco!</p>
+
+<p>Primeiro importamos as bibliotecas necessárias:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span></code></pre></figure>
+
+<ul>
+  <li>O pacote requests é utilizado para fazer requisições aos servidores que hospedam a página.</li>
+  <li>Do pacote bs4 vamos utilizar o BeautifulSoup que vai nos ajudar no tratamento do html.</li>
+  <li>Com o pandas vamos criar um dataframe para manipular de maneira mais fácil os dados.</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">url</span> <span class="o">=</span> <span class="s">'https://www.worlddata.info/america/brazil/populationgrowth.php'</span>
+<span class="n">cabecalhos</span> <span class="o">=</span> <span class="p">{</span><span class="s">'User-Agent'</span><span class="p">:</span><span class="s">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)'</span><span class="p">}</span>
+<span class="n">pagina</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span> <span class="o">=</span> <span class="n">cabecalhos</span><span class="p">)</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">pagina</span><span class="p">.</span><span class="n">text</span><span class="p">,</span> <span class="s">'html.parser'</span><span class="p">)</span></code></pre></figure>
+
+<ul>
+  <li>
+<b>url</b> é o endereço da página alvo</li>
+  <li>
+<b>cabecalhos</b> é para o servidor interpretar que é um browser Chrome que está fazendo a requisição GET</li>
+  <li>
+<b>pagina</b> é o retorno da nossa requisição</li>
+  <li>
+<b>html</b> é o nosso arquivo formatado pelo BeaultifulSoup</li>
+</ul>
+
+<p>Aqui fazemos a extração da tabela que contém os dados que precisamos:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">tabela</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">'table'</span><span class="p">,</span> <span class="p">{</span><span class="s">'class'</span><span class="p">:</span> <span class="s">'std100 hover'</span><span class="p">})</span></code></pre></figure>
+
+<ul>
+  <li>A variável <b>tabela</b> está recebendo a parte do html que contém a <b>table</b> com a classe <b>std100 hover</b>
+</li>
+</ul>
+
+<p>Agora vamos extrair os cabeçalhos da tabela,<b><i> lembrando que esses cabeçalhos são diferentes dos que usamos anteriormente na requisição da pagina!</i></b></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">cabecalhos</span> <span class="o">=</span> <span class="n">tabela</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'th'</span><span class="p">)</span></code></pre></figure>
+
+<ul>
+  <li>Aqui a variável <b>cabecalhos</b> recebe todos os elementos <b>th</b> que existiam dentro da variável <b>tabela</b>
+</li>
+</ul>
+
+<p><i>Saída</i>:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">[</span><span class="o">&lt;</span><span class="n">th</span> <span class="n">class</span><span class="o">=</span><span class="s">"left"</span><span class="o">&gt;</span><span class="n">Jahr</span><span class="o">&lt;/</span><span class="n">th</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="o">&lt;</span><span class="n">th</span><span class="o">&gt;</span><span class="n">Population</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">Brazil</span><span class="o">&lt;/</span><span class="n">th</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="o">&lt;</span><span class="n">th</span><span class="o">&gt;</span><span class="n">Change</span><span class="o">&lt;/</span><span class="n">th</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="o">&lt;</span><span class="n">th</span><span class="o">&gt;</span><span class="n">Birthrate</span><span class="o">&lt;/</span><span class="n">th</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="o">&lt;</span><span class="n">th</span><span class="o">&gt;</span><span class="n">Deathrate</span><span class="o">&lt;/</span><span class="n">th</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="o">&lt;</span><span class="n">th</span><span class="o">&gt;</span><span class="n">Population</span><span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span><span class="n">World</span><span class="o">&lt;/</span><span class="n">th</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="o">&lt;</span><span class="n">th</span><span class="o">&gt;</span><span class="n">Change</span><span class="o">&lt;/</span><span class="n">th</span><span class="o">&gt;</span><span class="p">]</span></code></pre></figure>
+
+<p>Fazemos a extração apenas do texto que existe em cada elemento <b>th</b></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">cabecalhos</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cabecalhos</span><span class="p">]</span></code></pre></figure>
+
+<p><i>Saída</i>:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">[</span><span class="s">'Jahr'</span><span class="p">,</span>
+<span class="s">'PopulationBrazil'</span><span class="p">,</span>
+<span class="s">'Change'</span><span class="p">,</span>
+<span class="s">'Birthrate'</span><span class="p">,</span>
+<span class="s">'Deathrate'</span><span class="p">,</span>
+<span class="s">'PopulationWorld'</span><span class="p">,</span>
+<span class="s">'Change'</span><span class="p">]</span></code></pre></figure>
+
+<p>Aqui pesquisamos todos os <b>tr</b> que existem dentro da variável tabela</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">linhas</span> <span class="o">=</span> <span class="n">tabela</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'tr'</span><span class="p">,</span> <span class="p">{</span><span class="s">'class'</span><span class="p">:</span><span class="s">'nowrap right'</span><span class="p">})</span></code></pre></figure>
+
+<p>Um trecho da saída:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&lt;</span><span class="n">tr</span> <span class="n">class</span><span class="o">=</span><span class="s">"nowrap right"</span><span class="o">&gt;&lt;</span><span class="n">td</span> <span class="n">class</span><span class="o">=</span><span class="s">"left"</span><span class="o">&gt;</span><span class="mi">1961</span><span class="o">&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;</span><span class="mf">74.35</span> <span class="n">M</span><span class="o">&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;</span><span class="mf">2.97</span> <span class="o">%&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;</span> <span class="o">&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;</span> <span class="o">&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span> <span class="n">class</span><span class="o">=</span><span class="s">"blank"</span><span class="o">&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;</span><span class="mi">3</span><span class="p">,</span><span class="mi">075</span> <span class="n">M</span><span class="o">&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;</span><span class="mf">1.35</span> <span class="o">%&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;/</span><span class="n">tr</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="o">&lt;</span><span class="n">tr</span> <span class="n">class</span><span class="o">=</span><span class="s">"nowrap right"</span><span class="o">&gt;&lt;</span><span class="n">td</span> <span class="n">class</span><span class="o">=</span><span class="s">"left"</span><span class="o">&gt;</span><span class="mi">1962</span><span class="o">&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;</span><span class="mf">76.57</span> <span class="n">M</span><span class="o">&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;</span><span class="mf">2.99</span> <span class="o">%&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;</span> <span class="o">&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;</span> <span class="o">&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span> <span class="n">class</span><span class="o">=</span><span class="s">"blank"</span><span class="o">&gt;&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;</span><span class="mi">3</span><span class="p">,</span><span class="mi">128</span> <span class="n">M</span><span class="o">&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="n">td</span><span class="o">&gt;</span><span class="mf">1.72</span> <span class="o">%&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;/</span><span class="n">tr</span><span class="o">&gt;</span><span class="p">,</span></code></pre></figure>
+
+<p>Próximo passo é remover o <b>M</b> e <b>%</b> que existe em alguns <b>td</b></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">re</span>
+<span class="n">conteudo_por_linha</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">remover_simbolos</span> <span class="o">=</span> <span class="s">'% M‰'</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="s">"["</span> <span class="o">+</span> <span class="n">remover_simbolos</span> <span class="o">+</span> <span class="s">"]"</span>
+
+<span class="k">for</span> <span class="n">linha</span> <span class="ow">in</span> <span class="n">linhas</span><span class="p">:</span>
+    <span class="n">dado_elemento</span> <span class="o">=</span> <span class="n">linha</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">'td'</span><span class="p">)</span>
+    <span class="n">dado_elemento</span> <span class="o">=</span> <span class="p">[</span><span class="n">re</span><span class="p">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="n">item</span><span class="p">.</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">dado_elemento</span><span class="p">]</span>
+    <span class="n">conteudo_por_linha</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">dado_elemento</span><span class="p">)</span></code></pre></figure>
+
+<p>Montando o nosso Data Frame</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">conteudo_por_linha</span><span class="p">)</span>
+<span class="n">df</span><span class="p">.</span><span class="n">drop</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span></code></pre></figure>
+
+<p>Mostrando os primeiros registros do Data Frame</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span><span class="p">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">cabecalhos</span>
+<span class="n">df</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
+
+        <span class="n">Jahr</span>	<span class="n">PopulationBrazil</span>	<span class="n">Change</span>	<span class="n">Birthrate</span>	<span class="n">Deathrate</span>	<span class="n">PopulationWorld</span>	<span class="n">Change</span>
+<span class="mi">0</span>	<span class="mi">1961</span>	           <span class="mf">74.35</span>	<span class="mf">2.97</span>			                          <span class="mi">3</span><span class="p">,</span><span class="mi">075</span>	<span class="mf">1.35</span>
+<span class="mi">1</span>	<span class="mi">1962</span>	           <span class="mf">76.57</span>	<span class="mf">2.99</span>			                          <span class="mi">3</span><span class="p">,</span><span class="mi">128</span>	<span class="mf">1.72</span>
+<span class="mi">2</span>	<span class="mi">1963</span>	           <span class="mf">78.85</span>	<span class="mf">2.98</span>			                          <span class="mi">3</span><span class="p">,</span><span class="mi">193</span>	<span class="mf">2.07</span>
+<span class="mi">3</span>	<span class="mi">1964</span>	           <span class="mf">81.17</span>	<span class="mf">2.94</span>			                          <span class="mi">3</span><span class="p">,</span><span class="mi">258</span>	<span class="mf">2.05</span>
+<span class="mi">4</span>	<span class="mi">1965</span>	           <span class="mf">83.50</span>	<span class="mf">2.87</span>			                          <span class="mi">3</span><span class="p">,</span><span class="mi">325</span>	<span class="mf">2.05</span></code></pre></figure>
+
+<p>Convertendo a variável <b>PopulationBrazil</b> em float</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span><span class="p">[</span><span class="s">'PopulationBrazil'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'PopulationBrazil'</span><span class="p">].</span><span class="n">astype</span><span class="p">(</span><span class="s">'float'</span><span class="p">)</span></code></pre></figure>
+
+<p>Plotando um gráfico</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span> <span class="o">=</span> <span class="mi">55</span><span class="p">)</span>
+<span class="n">sns</span><span class="p">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s">'Jahr'</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s">'PopulationBrazil'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Ano'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'População Brasileira'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="../images/webscraping/graf1.PNG" alt="Gráfico"></p>
+
+
+
+</div>
+  </main>
+
+  <footer class="mt-auto py-3 text-center">
+
+  <small class="text-muted mb-2">
+    <i class="fas fa-code"></i> with <i class="fas fa-heart"></i>
+    by <strong>Luiz Philippe T. Monferrari</strong>
+  </small>
+
+  <div class="container-fluid justify-content-center">
+<a class="social mx-1" href="mailto:datasciencemonferrari@gmail.com" style="color: #6c757d" onmouseover="this.style.color='#db4437'" onmouseout="this.style.color='#6c757d'">
+      <i class="fas fa-envelope fa-1x"></i>
+    </a><a class="social mx-1" href="https://www.github.com/lmonferrari" style="color: #6c757d" onmouseover="this.style.color='#333333'" onmouseout="this.style.color='#6c757d'">
+      <i class="fab fa-github fa-1x"></i>
+    </a><a class="social mx-1" href="https://www.linkedin.com/in/luiz-philippe-tavares-monferrari-548546142" style="color: #6c757d" onmouseover="this.style.color='#007bb5'" onmouseout="this.style.color='#6c757d'">
+      <i class="fab fa-linkedin-in fa-1x"></i>
+    </a><a class="social mx-1" href="https://pt.stackoverflow.com/u/201329" style="color: #6c757d" onmouseover="this.style.color='#f48024'" onmouseout="this.style.color='#6c757d'">
+      <i class="fab fa-stack-overflow fa-1x"></i>
+    </a>
+
+</div>
+<small id="attribution">
+    theme <a href="https://github.com/YoussefRaafatNasry/portfolYOU">portfolYOU</a>
+  </small>
+  
+</footer>
+  
+  <!-- GitHub Buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<!-- jQuery CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+
+<!-- Bootstrap JS CDN -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<!-- wow.js CDN & Activation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
+<script> new WOW().init(); </script>
+
+<!-- Initialize all tooltips -->
+<script>
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+
+</body>
+
+</html>

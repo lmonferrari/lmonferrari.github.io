@@ -1,0 +1,19 @@
+- name: Apache Spark
+  percentage: 85
+  color: info
+
+- name: Web Scraping
+  percentage: 90
+  color: success
+
+- name: Machine Learning
+  percentage: 85
+  color: danger
+
+- name: Análise de Dados
+  percentage: 93
+  color: info
+
+- name: Análise Estatística
+  percentage: 93
+  color: success 

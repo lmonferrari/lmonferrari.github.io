@@ -1,0 +1,27 @@
+[
+  
+    {
+      "title"    : "Introdução a Probabilidade - Análise Combinatória",
+      "category" : "",
+      "tags"     : "Statistics",
+      "url"      : "/blog/analise-combinatoria",
+      "date"     : "2020-09-02 00:00:00 -0300"
+    } ,
+  
+    {
+      "title"    : "Algumas observações úteis",
+      "category" : "",
+      "tags"     : "Data Science",
+      "url"      : "/blog/algumas-observacoes-uteis",
+      "date"     : "2020-08-20 00:00:00 -0300"
+    } ,
+  
+    {
+      "title"    : "Web Scraping Básico com Python",
+      "category" : "",
+      "tags"     : "Web Scraping",
+      "url"      : "/blog/web-scraping-basico",
+      "date"     : "2020-08-19 00:00:00 -0300"
+    } 
+  
+]
